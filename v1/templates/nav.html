@@ -1,0 +1,19 @@
+<div >
+<ul class="layui-nav">
+  <li class="layui-nav-item">
+    <a href="{% url 'bkz:home' %}">首页<span class="layui-badge">9</span></a>
+  </li>
+  <li class="layui-nav-item">
+    <a href="reward.html">兑换奖励<span class="layui-badge-dot"></span></a>
+  </li>
+  <li class="layui-nav-item">
+    <a href="javascript:;"><img src="http://t.cn/RCzsdCq" class="layui-nav-img">我</a>
+    <dl class="layui-nav-child">
+      <dd><a href="{% url 'bkz:typelist' 1 %}">计划管理</a></dd>
+      <dd><a href="{% url 'bkz:typelist' 1 %}">类型管理</a></dd>
+	  <dd><a href="exchange.html">兑换记录</a></dd>
+      <dd><a href="{% url 'bkz:userinfo' 1 %}">修改信息</a></dd>
+    </dl>
+  </li>
+</ul>
+</div>

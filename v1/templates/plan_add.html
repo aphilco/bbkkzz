@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn" lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>bbkkzz_demo</title>
+<link href="../static/css/layui.css" rel="stylesheet" type="text/css" />
+<link href="../static/css/global.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../static/layui.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+
+
+</head>
+<body>
+<div >
+<ul class="layui-nav">
+  <li class="layui-nav-item">
+    <a href="home.html">首页<span class="layui-badge">9</span></a>
+  </li>
+  <li class="layui-nav-item">
+    <a href="reward.html">兑换奖励<span class="layui-badge-dot"></span></a>
+  </li>
+  <li class="layui-nav-item">
+    <a href="javascript:;"><img src="http://t.cn/RCzsdCq" class="layui-nav-img">我</a>
+    <dl class="layui-nav-child">
+      <dd><a href="plan.html">计划管理</a></dd>
+      <dd><a href="type.html">类型管理</a></dd>
+	  <dd><a href="exchange.html">兑换记录</a></dd>
+      <dd><a href="userinfo.html">修改信息</a></dd>
+    </dl>
+  </li>
+</ul>
+</div>
+
+
+
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+  <legend>新增/编辑计划 
+  
+<a href="plan.html" class="layui-btn layui-btn-normal  layui-btn-radius"><i class="layui-icon">&#xe65c;</i>返回</a></legend>
+</fieldset>
+
+
+<form class="layui-form layui-form-pane" action="">
+  <div  style="width:96%; margin:0 auto;">
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">计划名称</label>
+    <div class="layui-input-block">
+      <input type="text" name="pname" autocomplete="off" placeholder="请输入" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">所属用户</label>
+    <div class="layui-input-block">
+      <input type="text" name="uname" autocomplete="off" placeholder="当前用户" class="layui-input" disabled="">
+    </div>
+  </div>
+  
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">计划清单</label>
+      <div class="layui-input-inline">
+        <select name="list">
+          <option value="">新建分类</option>
+          <optgroup label="行为习惯">
+            <option value="饭钱便后洗手">饭钱便后洗手</option>
+			<option value="午睡一小时">午睡一小时</option>
+			<option value="及时整理衣物">及时整理衣物</option>
+          </optgroup>
+          <optgroup label="家务">
+            <option value="饭前拜访碗筷">饭前拜访碗筷</option>
+            <option value="饭后收拾桌子">饭后收拾桌子</option>
+			<option value="打扫卫生">打扫卫生</option>
+			<option value="扔垃圾">扔垃圾</option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">排序</label>
+    <div class="layui-input-inline">
+      <input type="text" name="sort" lay-verify="required" value="30"  class="layui-input">
+    </div>
+	<div class="layui-form-mid layui-word-aux">数字越大排在越前</div>
+  </div>
+  
+  <div class="layui-form-item" pane="">
+    <label class="layui-form-label">状态</label>
+    <div class="layui-input-block">
+      <input type="checkbox" checked="" name="" lay-skin="switch" lay-filter="switchTest" title="显示/隐藏">
+    </div>
+  </div>
+
+ <div class="layui-form">
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">开始时间</label>
+      <div class="layui-input-inline">
+        <input type="text" class="layui-input" id="test6" placeholder=" - ">
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">结束时间</label>
+	  <div class="layui-input-inline">
+        <input type="text" class="layui-input" id="test7" placeholder=" - ">
+      </div>
+    </div>    
+  </div>
+</div> 
+  
+  
+  
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>  
+
+  
+</div>
+</form>
+
+ </div> 
+    
+
+
+<script>
+//Demo
+layui.use(['element','form','laydate', ], function(){
+  var form = layui.form
+  ,$ = layui.jquery
+  ,laydate = layui.laydate	//日期
+  ,element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块  
+  
+  //日期范围
+  laydate.render({
+    elem: '#test6'
+  }); 
+   laydate.render({
+    elem: '#test7'
+  });
+  
+});
+</script>
+
+</body>
+</html>

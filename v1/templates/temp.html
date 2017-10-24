@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %} 临时测试数据{% endblock %}
+
+{% block content %}
+
+    <form action="" method="post" class="layui-form layui-form-pane">
+{% csrf_token %}
+    {{ form }}
+
+        <div class="layui-form-item">
+    <label class="layui-form-label">{{ form.tname.label }}</label>
+    <div class="layui-input-block">
+      {{ form.tname }}
+    </div>
+  </div>
+
+
+
+
+        <input type="submit"></input>
+    </form>
+
+<script>
+//Demo
+layui.use(['element','form', ], function(){
+  var form = layui.form
+  ,$ = layui.jquery
+  ,element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+
+
+
+});
+</script>
+{% endblock %}

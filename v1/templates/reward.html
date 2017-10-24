@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn" lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>bbkkzz_demo</title>
+<link href="../static/css/layui.css" rel="stylesheet" type="text/css" />
+<link href="../static/css/global.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../static/layui.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+
+
+</head>
+<body>
+<div >
+<ul class="layui-nav">
+  <li class="layui-nav-item">
+    <a href="home.html">首页<span class="layui-badge">9</span></a>
+  </li>
+  <li class="layui-nav-item">
+    <a href="reward.html">兑换奖励<span class="layui-badge-dot"></span></a>
+  </li>
+  <li class="layui-nav-item">
+    <a href="javascript:;"><img src="http://t.cn/RCzsdCq" class="layui-nav-img">我</a>
+    <dl class="layui-nav-child">
+      <dd><a href="plan.html">计划管理</a></dd>
+      <dd><a href="type.html">类型管理</a></dd>
+	  <dd><a href="exchange.html">兑换记录</a></dd>
+      <dd><a href="userinfo.html">修改信息</a></dd>
+    </dl>
+  </li>
+</ul>
+</div>
+
+
+
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+  <legend>兑换奖励</legend>
+</fieldset>
+
+
+
+<div  style="width:96%; margin:0 auto;">
+<ul class="flow-default">
+
+
+	<li>
+	<a href="#"><img src="../static/images/400x400.jpg"></a>
+	<div class="layui-tab-content">
+	<p class="h5">火龙号	(43 <i class="layui-icon h6">&#xe658;</i>)</p>
+	<p><a href="exchange.html" class="layui-btn layui-btn-normal  layui-btn-radius"><i class="layui-icon">&#xe61f;</i>立即兑换</a></p>
+	</div>
+	</li>
+	<li>
+	<a href="#"><img src="../static/images/400x400.jpg"></a>
+	<div class="layui-tab-content">
+	<p class="h5">火龙号	(43 <i class="layui-icon h6">&#xe658;</i>)</p>
+	<p><a href="exchange.html" class="layui-btn layui-btn-normal  layui-btn-radius"><i class="layui-icon">&#xe61f;</i>立即兑换</a></p>
+	</div>
+	</li>
+	<li>
+	<a href="#"><img src="../static/images/400x400.jpg"></a>
+	<div class="layui-tab-content">
+	<p class="h5">火龙号	(43 <i class="layui-icon h6">&#xe658;</i>)</p>
+	<p><a href="exchange.html" class="layui-btn layui-btn-normal  layui-btn-radius"><i class="layui-icon">&#xe61f;</i>立即兑换</a></p>
+	</div>
+	</li>	
+
+</ul>
+
+
+<div id="demo2-1"></div>
+
+</div>
+</div>
+
+
+    
+
+
+<script>
+//Demo
+layui.use(['element','form','laypage','layer',], function(){
+  var form = layui.form
+  ,$ = layui.jquery
+  ,laypage = layui.laypage
+  ,layer = layui.layer
+  ,element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块  
+
+  //总页数低于页码总数
+  laypage.render({
+    elem: 'demo2-1'
+    ,count: 50
+    ,theme: '#FF5722'
+  });
+});
+</script>
+
+</body>
+</html>
