@@ -33,7 +33,7 @@
         <td>&nbsp;&nbsp;<i class="layui-icon">{{ node.icont }}</i>&nbsp;&nbsp;{{ node.tname }} </td>
         <td>
               <div class="layui-btn-group">
-                <a href="" class="layui-btn layui-btn-primary layui-btn-small">编辑</a>
+                <a href="{% url 'bkz:typeedit' node.id %}" class="layui-btn layui-btn-primary layui-btn-small">编辑</a>
               </div>
         </td>
     </tr>
@@ -42,7 +42,7 @@
         <td>{{ node.tname }} </td>
         <td>
               <div class="layui-btn-group">
-                <a href="" class="layui-btn layui-btn-primary layui-btn-small">编辑</a>
+                <a href="{% url 'bkz:typeedit' node.id %}" class="layui-btn layui-btn-primary layui-btn-small">编辑</a>
               </div>
         </td>
     </tr>

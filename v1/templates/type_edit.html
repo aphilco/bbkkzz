@@ -1,53 +1,41 @@
 {% extends 'base.html' %}
 
-{% block title %}新增类型{% endblock %}
+{% block title %}修改类型{% endblock %}
 
 {% block content %}
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-  <legend>新建任务类型
+  <legend>修改类型
 
 <a href="{% url 'bkz:typelist' 1 %}" class="layui-btn layui-btn-normal  layui-btn-radius"><i class="layui-icon">&#xe65c;</i>返回</a></legend>
 </fieldset>
 
 
-<form class="layui-form layui-form-pane" action="{% url 'bkz:typeadd' 1 %}" method="post">
+<form class="layui-form layui-form-pane" action="{% url 'bkz:typeedit' nodes.id %}" method="post">
     {% csrf_token %}
   <div  style="width:96%; margin:0 auto;">
 
   <div class="layui-form-item">
     <label class="layui-form-label">任务名称</label>
     <div class="layui-input-block">
-      <input type="text" name="tname" autocomplete="off" placeholder="请输入类型名称" class="layui-input">
+      <input type="text" name="tname" autocomplete="off" value="{{ nodes.tname }}" class="layui-input">
     </div>
   </div>
 
-
-
-
   <div class="layui-form-item">
     <div class="layui-inline">
-      <label class="layui-form-label">选择分组</label>
+      <label class="layui-form-label">{{ form.t_pid.label  }}</label>
       <div class="layui-input-inline">
-        <select name="t_pid">
-          <option value="0">新建顶级分类</option>
-
-        {% load mptt_tags %}<!--mptt 只能选择1级分类-->
-        {% recursetree nodes %}
-            {% if node.is_leaf_node %}
-            {% else %}
-                <option value="{{ node.id }}">{{ node.tname }} </option>
-            {% endif %}
-        {% endrecursetree %}
-
-        </select>
+          {{ form.t_pid }}
       </div>
     </div>
   </div>
 
+
+
   <div class="layui-form-item layui-form-text">
     <label class="layui-form-label">任务描述</label>
     <div class="layui-input-block">
-      <textarea placeholder="请输入内容" class="layui-textarea" name="info"></textarea>
+      <textarea class="layui-textarea"  name="info">{{ nodes.info }}</textarea>
     </div>
   </div>
 
@@ -56,12 +44,9 @@
     <label class="layui-form-label">任务难度</label>
     <div class="layui-input-inline">
       <select name="difficulty" lay-filter="difficulty">
-        <option value=""></option>
-        <option value="0">1</option>
-        <option value="1" selected="">2</option>
-        <option value="2">3</option>
-        <option value="3">4</option>
-        <option value="4">5</option>
+          {% for i in numli %}
+            <option value="{{ i }}" {% if nodes.difficulty == i %} selected="" {% endif %} >{{ i }}</option>
+          {% endfor %}
       </select>
     </div>
     <div class="layui-form-mid layui-word-aux">非必填项</div>
@@ -71,21 +56,23 @@
     <label class="layui-form-label">星星数：</label>
     <div class="layui-input-inline">
       <select name="star" lay-filter="star">
-        <option value=""></option>
-        <option value="0">1</option>
-        <option value="1" selected="">2</option>
-        <option value="2">3</option>
-        <option value="3">4</option>
-        <option value="4">5</option>
+        {% for i in numli %}
+            <option value="{{ i }}" {% if nodes.star == i %} selected="" {% endif %} >{{ i }}</option>
+          {% endfor %}
       </select>
     </div>
     <div class="layui-form-mid layui-word-aux">非必填项</div>
   </div>
 
-  <div class="layui-form-item layui-form-text">
+
+    <div class="layui-form-item">
     <label class="layui-form-label">任务图标</label>
     <div class="layui-input-block">
-    <input type="text" name="icont" autocomplete="off" placeholder="icont" class="layui-input">
+      <input type="text" name="icont" autocomplete="off" placeholder="icont" value="{{ nodes.icont }}" class="layui-input">
+    </div>
+  </div>
+
+  <div class="layui-form-item layui-form-text">
     <ul class="site-doc-icon">
 
 
@@ -160,7 +147,7 @@
   <div class="layui-form-item">
     <label class="layui-form-label">排序</label>
     <div class="layui-input-inline">
-      <input type="text" name="sort" lay-verify="required" value="30"  class="layui-input">
+      <input type="text" name="sort" lay-verify="required" value="{{ nodes.sort }}"  class="layui-input">
     </div>
 	<div class="layui-form-mid layui-word-aux">数字越大排在越前</div>
   </div>
@@ -168,7 +155,7 @@
   <div class="layui-form-item" pane="">
     <label class="layui-form-label">状态</label>
     <div class="layui-input-block">
-      <input type="checkbox" checked="" name="is_delete" lay-skin="switch" lay-filter="switchTest" title="显示/隐藏">&nbsp;显示/隐藏
+    <input id="is_delete" name="is_delete" type="checkbox" checked value="0" />
     </div>
   </div>
 
@@ -189,12 +176,16 @@
 
 <script>
 //Demo
-layui.use(['element','form', ], function(){
+layui.use(['element','form','laydate', ], function(){
   var form = layui.form
   ,$ = layui.jquery
+  ,laydate = layui.laydate	//日期
   ,element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
 
-
+  //日期初始赋值
+  laydate.render({
+    elem: '#addtime'
+  });
 
 });
 </script>

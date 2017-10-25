@@ -38,11 +38,7 @@ def typelist(request,user_id):
     return render(request,'type.html', {'nodes':typeli},
                           context_instance=RequestContext(request))
 
-def tp_add(request,user_id):
-    form = typeadd(request.POST)
-    typeli = Type.objects.filter(uname=user_id)
-    return render(request, 'type_test.html', {'nodes': typeli},
-                  context_instance=RequestContext(request))
+
 
 def type_add(request,user_id):
     form = typeadd(request.POST)
@@ -52,19 +48,52 @@ def type_add(request,user_id):
         addtime = form.cleaned_data['addtime']
         uname = form.cleaned_data['uname']
         isdelete = form.cleaned_data['is_delete']
-        Type.objects.create(tname=tname,t_pid=t_pid,addtime=addtime,uname=uname,is_delete=isdelete)
+        info = form.cleaned_data['info']
+        icont = form.cleaned_data['icont']
+        difficulty = form.cleaned_data['difficulty']
+        star = form.cleaned_data['star']
+        sort = form.cleaned_data['sort']
+
+        Type.objects.create(tname=tname,t_pid=t_pid,addtime=addtime,uname=uname,is_delete=isdelete,info=info,icont=icont,difficulty=difficulty,star=star,sort=sort,)
         return redirect('/bkz/type/1')
 
-    typeli = Type.objects.filter(uname=user_id)
     context = {
         'form':form,
-        'nodes': typeli,
     }
 
     return render(request, 'type_test.html', context,
                   context_instance=RequestContext(request))
 
+def type_edit(request,type_id):
+    typecontent = Type.objects.get(pk=type_id)
+    #tpid =
+    form = typeadd(request.POST or None,initial={'t_pid':typecontent.t_pid})
+    if request.method=='POST':
+        typecontent.tname = request.POST['tname']
+        #typecontent.t_pid = typeadd(request.POST or None).cleaned_data['t_pid']
+        #addtime = form.cleaned_data['addtime']
+        #uname = form.cleaned_data['uname']
+        typecontent.isdelete = request.POST['is_delete']
+        if typecontent.isdelete == '0' :
+            typecontent.isdelete = True
+        else:
+            typecontent.isdelete = False
+        typecontent.info = request.POST['info']
+        typecontent.icont = request.POST['icont']
+        typecontent.difficulty = request.POST['difficulty']
+        typecontent.star = request.POST['star']
+        typecontent.sort = request.POST['sort']
+        typecontent.save()
+        #Type.objects.get_or_create(pk=type_id,tname=tname,t_pid=t_pid,addtime=addtime,is_delete=isdelete,info=info,icont=icont,difficulty=difficulty,star=star,)
+        return redirect('/bkz/type/1')
 
+    numli = [0,1,2,3,4,5,]
 
-    #Type.objects.get_or_create(tname=tname,is_delete=0,addtime=datetime.datetime.now(),uname=uname.id)
-    #Type.objects.create(tname=tname,t_pid=tid,is_delete=0)
+    context = {
+        'form':form,
+        'nodes': typecontent,
+        'numli':numli
+    }
+
+    return render(request, 'type_edit.html', context,)
+

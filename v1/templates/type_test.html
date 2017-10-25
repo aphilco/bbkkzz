@@ -34,7 +34,7 @@
   </div>
   <div class="layui-form-item">
     <div class="layui-inline">
-      <label class="layui-form-label">生日</label>
+      <label class="layui-form-label">创建日期</label>
       <div class="layui-input-block">
         <input type="text" name="addtime" id="addtime" autocomplete="off"  class="layui-input">
       </div>
@@ -174,7 +174,7 @@
   <div class="layui-form-item" pane="">
     <label class="layui-form-label">状态</label>
     <div class="layui-input-block">
-      <input type="checkbox" checked="" name="is_delete" lay-skin="switch" lay-filter="switchTest" title="显示/隐藏">&nbsp;显示/隐藏
+      {{ form.is_delete }}
     </div>
   </div>
 
