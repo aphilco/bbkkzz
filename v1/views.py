@@ -12,26 +12,37 @@ import datetime,re,os
 # Create your views here.
 
 def home(request):
-    userid = 1;
-    nowtime = datetime.datetime.now()
-    pp= Plan.objects.filter(uname=1)
-    p_home_list = Plan.objects.filter(uname=1).exclude(stime__gt=nowtime).exclude(etime__lt=nowtime).distinct()
-    loglist = Logdone.objects.filter(logtime=nowtime).values_list('donelist',flat=True)
+    userid = 1;#获得用户id
+    nowtime = datetime.datetime.now()#获取当前日期
+    #获得当天计划清单（当前用户下，开始日期小于当日，结束日期大于当日的计划内容）：
+    p_home_list = Plan.objects.filter(uname=userid).exclude(stime__gt=nowtime).exclude(etime__lt=nowtime).distinct()
+    #获得当天已完成的计划（完成日志表）
+    loglist = Logdone.objects.filter(uname=userid,logtime=nowtime)
+    #如果结果为空，则定义一个空值
+    jli = []
+    #不为空
+    if loglist.exists():
+        #则将donelist值读取后，转换为字符串，
+        numli = str(loglist[0])
+        #通过正则，形成新的格式列表n
+        f = re.compile(r'\,')
+        n = f.split(numli)
+        #新的列表元素是字符，所以需要转换为数字，方便前台判断，显示是否已经勾选了
+        for ll in n:
+            jli.append(int(ll))
+    #当天计划完成进度：
+    aa = len(p_home_list)
+    bb = len(numli)
+    if bb == 0 :
+        cc = 0
+    else:
+        cc = round(bb/float(aa),2)*100
 
-    # p = re.match(r'\,',loglist[0])
-    # m = p.group()
-
-    jihe = [5,7,8,9]
-    numli = []
-    jli=[]
-    for ll in loglist[0]:
-        numli.append(ll)
-
+    #创建前台显示字典
     context = {
         'plist':p_home_list,
-        'nowshow':nowtime,
-        'numli':numli,
-        'loglist':loglist[0]
+        'numli':jli,
+        'jindu':cc,
     }
 
     return render(request,'home.html',context)

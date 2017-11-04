@@ -11,24 +11,38 @@
 <div  style="width:96%; margin:0 auto;">
 
 <div class="layui-progress layui-progress-big" lay-showpercent="true">
-  <div class="layui-progress-bar" lay-percent="90%"></div>
+  <div class="layui-progress-bar" lay-percent="{{ jindu }}%"></div>
 </div>
-
+{{ jindu }}
 
 <form class="layui-form layui-form-pane" action=""  style="margin-top: 20px;">
-
-numlist:
-{{ numli }}
-<p> ---- </p>
-loglist
-    {{ loglist }}
-
-
 
 <ul class="layui-timeline">
 {% for p in plist %}
     {% for tt in p.list.all %}
-        {% if tt.is_leaf_node %}
+
+        {% if tt.is_leaf_node and tt.id not in numli%}
+  <li class="layui-timeline-item">
+    <i class="layui-icon layui-timeline-axis">&#xe617;</i>
+    <div class="layui-timeline-content layui-text">
+	  <i class="layui-icon h1 ">{{ tt.icont }} </i>
+      <h3 class="layui-timeline-title">{{ tt.id }}{{ tt.tname }} </h3>
+      <p>{{ tt.info }}</p>
+	  <p>{{ tt.star }}<i class="layui-icon">&#xe658;</i></p>
+    <p>{{ ll.donelist }}</p>
+	  <p style="text-align:right">
+
+          <input type="checkbox" {% if tt.id in numli %}checked=""{% endif %} name="open" value="{{ tt.id }}" lay-skin="switch" lay-filter="switchTest" lay-text="完成|未做"></p>
+
+    </div>
+  </li>
+            {% endif %}
+    {% endfor %}
+{% endfor %}
+{% for p in plist %}
+    {% for tt in p.list.all %}
+
+        {% if tt.is_leaf_node and tt.id in numli%}
   <li class="layui-timeline-item">
     <i class="layui-icon layui-timeline-axis">&#xe617;</i>
     <div class="layui-timeline-content layui-text">
@@ -72,8 +86,8 @@ loglist
 <script>
 layui.use(['element','form', 'layedit', 'laydate'], function(){
   var form = layui.form
+      ,$ = layui.jquery
   ,layer = layui.layer
-  ,layedit = layui.layedit
   ,laydate = layui.laydate	//日期
   ,element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块  
   
@@ -92,6 +106,8 @@ layui.use(['element','form', 'layedit', 'laydate'], function(){
 
   //监听指定开关
   form.on('switch(switchTest)', function(data){
+      
+
     layer.msg('开关checked：'+ (this.checked ? 'true' : 'false'), {
       offset: '6px'
     });
