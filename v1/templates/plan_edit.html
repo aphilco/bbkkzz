@@ -12,7 +12,7 @@
 </fieldset>
 
 
-<form class="layui-form layui-form-pane" action="{% url 'bkz:planadd' 1 %}" method="post">
+<form class="layui-form layui-form-pane" action="{% url 'bkz:planedit1' form.id %}" method="post">
     {% csrf_token %}
 
 
@@ -21,13 +21,13 @@
   <div class="layui-form-item">
     <label class="layui-form-label">计划名称</label>
     <div class="layui-input-block">
-      <input type="text" name="pname" autocomplete="off" placeholder="请输入" class="layui-input">
+      <input type="text" name="pname" autocomplete="off" value="{{ form.pname }}" class="layui-input">
     </div>
   </div>
   <div class="layui-form-item">
     <label class="layui-form-label">所属用户</label>
     <div class="layui-input-block">
-      {{ form.uname }}
+     <input type="text" name="uname" autocomplete="off" value="{{ form.uname }}" class="layui-input">
     </div>
   </div>
 
@@ -35,14 +35,17 @@
     <div class="layui-inline">
       <label class="layui-form-label">计划清单</label>
       <div class="layui-input-inline">
-          {{ form.list }}
+
+            <ul id="id_list">
+            {{ tlist.list }}
+            </ul>
       </div>
     </div>
       </div>
   <div class="layui-form-item">
     <label class="layui-form-label">排序</label>
     <div class="layui-input-inline">
-      <input type="text" name="sort" lay-verify="required" value="30"  class="layui-input">
+      <input type="text" name="sort" lay-verify="required" value=" {{ form.sort }}"  class="layui-input">
     </div>
 	<div class="layui-form-mid layui-word-aux">数字越大排在越前</div>
   </div>
@@ -59,13 +62,13 @@
     <div class="layui-inline">
       <label class="layui-form-label">开始时间</label>
       <div class="layui-input-inline">
-        <input type="text" class="layui-input" id="stime" name="stime" placeholder=" - ">
+        <input type="text" class="layui-input" id="stime" name="stime" placeholder=" - " value="{{ form.stime | date:'Y-m-d' }}">
       </div>
     </div>
     <div class="layui-inline">
       <label class="layui-form-label">结束时间</label>
 	  <div class="layui-input-inline">
-        <input type="text" class="layui-input" id="etime" name="etime" placeholder=" - ">
+        <input type="text" class="layui-input" id="etime" name="etime" placeholder=" - " value="{{ form.etime | date:'Y-m-d' }}">
       </div>
     </div>
   </div>
@@ -74,7 +77,7 @@
     <div class="layui-inline">
       <label class="layui-form-label">创建日期</label>
       <div class="layui-input-block">
-        <input type="text" name="addtime" id="addtime" autocomplete="off"  class="layui-input">
+        <input type="text" name="addtime" id="addtime" autocomplete="off"  class="layui-input" value="{{ form.addtime | date:'Y-m-d' }}">
       </div>
     </div>
   </div>
@@ -82,7 +85,7 @@
   
   <div class="layui-form-item">
     <div class="layui-input-block">
-      <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+      <input type="submit" class="layui-btn" lay-submit="" lay-filter="demo1" value="立即提交"></input>
       <button type="reset" class="layui-btn layui-btn-primary">重置</button>
     </div>
   </div>  

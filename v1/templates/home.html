@@ -5,7 +5,7 @@
 {% block content %}
 
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-  <legend>Todo List</legend>
+  <legend>{{ nowshow | date:'Y-m-d' }} Todo List</legend>
 </fieldset>
 
 <div  style="width:96%; margin:0 auto;">
@@ -16,48 +16,39 @@
 
 
 <form class="layui-form layui-form-pane" action=""  style="margin-top: 20px;">
-  
+
+numlist:
+{{ numli }}
+<p> ---- </p>
+loglist
+    {{ loglist }}
+
+
+
 <ul class="layui-timeline">
+{% for p in plist %}
+    {% for tt in p.list.all %}
+        {% if tt.is_leaf_node %}
   <li class="layui-timeline-item">
     <i class="layui-icon layui-timeline-axis">&#xe617;</i>
     <div class="layui-timeline-content layui-text">
-      <h3 class="layui-timeline-title">收拾玩具 </h3>
-      <p>能够及时的将不玩的玩具，集中整理回原处！</p>
-	  <p><i class="layui-icon">&#xe658;&#xe658;&#xe658;</i></p>
-	  <p style="text-align:right"> <input type="checkbox" checked="" name="open" lay-skin="switch" lay-filter="switchTest" lay-text="完成|未做"></p>
+	  <i class="layui-icon h1 ">{{ tt.icont }} </i>
+      <h3 class="layui-timeline-title">{{ tt.id }}{{ tt.tname }} </h3>
+      <p>{{ tt.info }}</p>
+	  <p>{{ tt.star }}<i class="layui-icon">&#xe658;</i></p>
+    <p>{{ ll.donelist }}</p>
+	  <p style="text-align:right">
+
+          <input type="checkbox" {% if tt.id in numli %}checked=""{% endif %} name="open" lay-skin="switch" lay-filter="switchTest" lay-text="完成|未做"></p>
+
     </div>
   </li>
-  <li class="layui-timeline-item">
-    <i class="layui-icon layui-timeline-axis">&#xe617;</i>
-    <div class="layui-timeline-content layui-text">
-	  <i class="layui-icon h1 ">&#xe658;</i>
-      <h3 class="layui-timeline-title">定时定量吃饭 </h3>
-      <p>早中晚饭前1个小时内，不吃零食</p>
-	  <p>能够在妈妈说准备吃饭了，迅速整理好杂事，进入吃饭状态</p>
-	  <p>不挑食，不厌食</p>
-	  <p>吃饭要专注</p>
-	  <p><i class="layui-icon">&#xe658;&#xe658;</i></p>
-	  <p style="text-align:right"> <input type="checkbox" checked="" name="open" lay-skin="switch" lay-filter="switchTest" lay-text="完成|未做"></p>
-    </div>
-  </li>  <li class="layui-timeline-item">
-    <i class="layui-icon layui-timeline-axis">&#xe617;</i>
-    <div class="layui-timeline-content layui-text">
-      <h3 class="layui-timeline-title">午睡一小时 </h3>
-      <p>当前计划对应内容详情</p>
-	  <p><i class="layui-icon">&#xe658;</i></p>
-	  <p style="text-align:right"> <input type="checkbox" checked="" name="open" lay-skin="switch" lay-filter="switchTest" lay-text="完成|未做"></p>
-    </div>
-  </li>  <li class="layui-timeline-item">
-    <i class="layui-icon layui-timeline-axis">&#xe617;</i>
-    <div class="layui-timeline-content layui-text">
-      <h3 class="layui-timeline-title">收拾衣物 </h3>
-      <p>当前计划对应内容详情</p>
-	  <p><i class="layui-icon">&#xe658;&#xe658;&#xe658;</i></p>
-	  <p style="text-align:right"> <input type="checkbox" checked="" name="open" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF"></p>
-    </div>
-  </li>
+            {% endif %}
+    {% endfor %}
+{% endfor %}
+
 </ul>  
- 
+
   
 
   

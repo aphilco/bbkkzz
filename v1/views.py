@@ -3,16 +3,38 @@ from __future__ import unicode_literals
 from django.template import loader, RequestContext
 from django.shortcuts import render,redirect
 from django.db import models
-from v1.forms import typeadd,userli
-from v1.models import Person,Type
-import datetime
+from v1.forms import typeadd,userli,plangroup
+from v1.models import Person,Type,Plan,Logdone
+import datetime,re,os
 
 
 
 # Create your views here.
 
 def home(request):
-    return render(request,'home.html')
+    userid = 1;
+    nowtime = datetime.datetime.now()
+    pp= Plan.objects.filter(uname=1)
+    p_home_list = Plan.objects.filter(uname=1).exclude(stime__gt=nowtime).exclude(etime__lt=nowtime).distinct()
+    loglist = Logdone.objects.filter(logtime=nowtime).values_list('donelist',flat=True)
+
+    # p = re.match(r'\,',loglist[0])
+    # m = p.group()
+
+    jihe = [5,7,8,9]
+    numli = []
+    jli=[]
+    for ll in loglist[0]:
+        numli.append(ll)
+
+    context = {
+        'plist':p_home_list,
+        'nowshow':nowtime,
+        'numli':numli,
+        'loglist':loglist[0]
+    }
+
+    return render(request,'home.html',context)
 
 
 def userinfo(request,user_id):
@@ -73,11 +95,11 @@ def type_edit(request,type_id):
         #typecontent.t_pid = typeadd(request.POST or None).cleaned_data['t_pid']
         #addtime = form.cleaned_data['addtime']
         #uname = form.cleaned_data['uname']
-        typecontent.isdelete = request.POST['is_delete']
-        if typecontent.isdelete == '0' :
-            typecontent.isdelete = True
+        isdelete = request.POST['is_delete']
+        if isdelete==''  :
+            typecontent.isdelete = 0
         else:
-            typecontent.isdelete = False
+            typecontent.isdelete = 1
         typecontent.info = request.POST['info']
         typecontent.icont = request.POST['icont']
         typecontent.difficulty = request.POST['difficulty']
@@ -97,3 +119,99 @@ def type_edit(request,type_id):
 
     return render(request, 'type_edit.html', context,)
 
+def planlist(request,user_id):
+    planli = Plan.objects.filter(uname= user_id)
+    #typegrou = Type.objects.get
+    return render(request,'plan.html', {'nodes':planli},
+                          context_instance=RequestContext(request))
+
+
+def planadd(request,user_id):
+    form = plangroup(request.POST)
+    if form.is_valid():
+        pname = request.POST['pname']
+        addtime = form.cleaned_data['addtime']
+        listid = request.POST.getlist('list')
+        uname = form.cleaned_data['uname']
+        isdelete = request.POST['is_delete']
+        sort = request.POST['sort']
+        stime = request.POST['stime']
+        etime = request.POST['etime']
+        qqqq = Plan.objects.create(pname=pname,addtime=addtime,uname=uname,is_delete=isdelete,sort=sort,stime=stime,etime=etime)
+        #listgroup = Type.objects.filter(id=listid)
+        #print listgroup
+        #listid = (1,2,5,6,7,9)
+        for i in listid:
+            qqqq.list.add(i)
+
+
+
+        return redirect('/bkz/plan/1')
+
+    context = {
+        'form':form,
+    }
+    return render(request,'plan_add.html', context,
+                          context_instance=RequestContext(request))
+
+def planedit(request,plan_id):
+    planli = Plan.objects.get(pk=plan_id)
+    listgroup = plangroup(request.POST,initial={'pname':planli.id})
+
+    if listgroup.is_valid():
+        # planli.pname = request.POST['pname']
+        # planli.addtime = listgroup.cleaned_data['addtime']
+        # #listid = request.POST.getlist('list')
+        # planli.isdelete = request.POST['is_delete']
+        # planli.sort = request.POST['sort']
+        # planli.stime = request.POST['stime']
+        # planli.etime = request.POST['etime']
+
+        # planli.save()
+
+        #for i in listid:
+        #    planli.list.add(i)
+        return render(request,'temp.html',)
+
+    context = {
+        'form': planli,
+        'tlist':listgroup,
+    }
+    return render(request, 'plan_edit.html', context,
+                  context_instance=RequestContext(request))
+
+#edit don't done
+def planedit1(request,plan_id):
+    planli = Plan.objects.get(pk=plan_id)
+    listgroup = plangroup(request.POST,initial={'pname':planli.id})
+
+
+    planli.pname = request.POST['pname']
+    #planli.addtime = request.POST['addtime']
+    listid = request.POST.getlist('list')
+    planli.isdelete = request.POST['is_delete']
+    planli.sort = request.POST['sort']
+    planli.stime = request.POST['stime']
+    planli.etime = request.POST['etime']
+
+    #planli.save()
+
+    plantype = Plan.objects.filter(pk=plan_id).save(planli)
+    plantype.list.add(i)
+
+    context = {
+        'form': planli,
+        'tlist': listgroup,
+    }
+    return render(request, 'plan.html', context,
+                  context_instance=RequestContext(request))
+
+def planinfo(request,plan_id):
+    plancontent = Plan.objects.get(pk=plan_id)
+    listgroup = plangroup(request.POST)
+    context = {
+        'form': plancontent,
+        'tlist': listgroup,
+    }
+    return render(request,'plan_info.html', context,
+                  context_instance=RequestContext(request))

@@ -1,5 +1,5 @@
-from django.forms import ModelForm,Form,widgets,fields
-from v1.models import Type,Person
+from django.forms import ModelForm,Form,widgets,fields,ModelMultipleChoiceField,forms,CheckboxSelectMultiple
+from v1.models import Type,Person,Plan
 
 RADIO_CHOICES=(
     ('0',"ON"),
@@ -18,4 +18,11 @@ class userli(ModelForm):
 
     class Meta:
         model = Person
+        fields = "__all__"
+
+class plangroup(ModelForm):
+
+    list = ModelMultipleChoiceField(widget=CheckboxSelectMultiple,queryset=Type.objects.all())
+    class Meta:
+        model = Plan
         fields = "__all__"

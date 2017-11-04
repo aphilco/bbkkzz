@@ -48,16 +48,27 @@ class Type(MPTTModel):
     def __unicode__(self):
         return self.tname
 
+
 class Plan(models.Model):
-    pname = models.CharField(u"姓名",max_length=30)
+    pname = models.CharField(u"计划名",max_length=30)
     uname = models.ForeignKey(Person)
     list = models.ManyToManyField(Type)
-    sort = models.IntegerField(u'排序值', blank=True, null=True,default=30)
-    stime = models.DateField(u'开始时间')
-    etime = models.DateField(u'结束时间')
+    sort = models.IntegerField(u'排序值',blank=True, null=True,default=30)
+    stime = models.DateField(u'开始时间',blank=True, null=True,)
+    etime = models.DateField(u'结束时间',blank=True, null=True,)
     addtime = models.DateField(u'创建时间')
     is_delete = models.BooleanField(u'是否删除')
 
     def __unicode__ (self):
         return self.pname
 
+class Logdone(models.Model):
+    logtime = models.DateField(u"记录时间")
+    pname = models.ForeignKey(Plan)
+    uname = models.ForeignKey(Person)
+    donelist = models.CharField(u"完成情况",max_length=150, blank=True)
+    startcount = models.IntegerField(u'星星数', blank=True)
+    addtime = models.DateField(u'创建时间')
+
+    def __unicode__ (self):
+        return self.donelist
