@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.template import loader, RequestContext
-from django.shortcuts import render,redirect
-from django.db import models
-from v1.forms import typeadd,userli,plangroup
-from v1.models import Person,Type,Plan,Logdone
-import datetime,re,os
 
+import datetime
+import re
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+# from django.utils import simplejson
+from django.template import RequestContext
+
+from v1.forms import typeadd, plangroup
+from v1.models import Person, Type, Plan, Logdone
 
 
 # Create your views here.
@@ -31,8 +34,12 @@ def home(request):
         for ll in n:
             jli.append(int(ll))
     #当天计划完成进度：
-    aa = len(p_home_list)
-    bb = len(numli)
+    pli=[]
+    for pp in p_home_list.values_list('list'):
+        pli.append(pp)
+
+    aa = len(pli)
+    bb = len(jli)
     if bb == 0 :
         cc = 0
     else:
@@ -46,6 +53,74 @@ def home(request):
     }
 
     return render(request,'home.html',context)
+
+#首页 对计划内容进行操作时，用到的数据校验
+#获得用户id，待操作的计划id，
+
+def homejson(request,logtypeid):
+    userid = 1;  # 获得用户id
+    nowtime = datetime.datetime.now()  # 获取当前日期
+    #获得当天计划清单（当前用户下，开始日期小于当日，结束日期大于当日的计划内容）：
+    p_home_list = Plan.objects.filter(uname=userid).exclude(stime__gt=nowtime).exclude(etime__lt=nowtime).distinct()
+    #获得当天已完成的计划（完成日志表）
+    #loglist = Logdone.objects.filter(uname=userid,logtime=nowtime)
+    loglist = Logdone.objects.filter(uname=userid,logtime=nowtime).values('donelist')
+
+    #将得到的数组，遍历出来，方便输出
+    for i in loglist:
+        print i
+
+    #定义空数组，进行赋值操作
+    jli = []
+    #判断loglist如果有值，则进行的是更新操作
+    if loglist.exists():
+        # 则将donelist值读取后，转换为字符串，
+        hli = i['donelist']
+        # 通过正则，形成新的格式列表n
+        f = re.compile(r'\,')
+        n = f.split(hli)
+        # 新的列表元素是字符，所以需要转换为数字，方便前台判断，显示是否已经勾选了
+        for ll in n:
+            jli.append(int(ll))
+
+        # 此时需要判断一个问题，即，
+        ii = int(logtypeid)  # 当前的计划ID是否已经在列表中，转换为数字格式进行比对
+        if ii in jli:  # 如果存在，则默认为删除该值，
+            #判断是否是唯一值
+            jli.remove(ii)
+
+        else:  # 如果不存在，则认为是添加操作
+            jli.append(ii)
+
+        #将最终的完成清单数组转换为字符串，存储
+        xxx = ','.join(str(bb) for bb in jli)
+        #更新当前字段
+        #更新星星总数，来源于完成内容项，该值同时做个判断
+        starnum = len(jli)
+
+        #当前传的数据如果是唯一完成项，即donelist里只有1个计划id时，为了避免报错，需要删除当前的记录
+        if starnum == 0 :
+            Logdone.objects.filter(uname=userid, logtime=nowtime).delete()
+        else:#如果不是唯一值，则更新当前记录
+            loglist.update(donelist=xxx,startcount=starnum)
+
+        return HttpResponse(True)
+
+    #若当天是第一次操作，则执行添加动作
+    else:
+        #sqlinfo = (
+        #logtime = nowtime,
+        #pname = logtypeid,
+        #uname = userid,
+        #donelist = str(logtypeid),
+        #starcount = 1,
+        #addtime = nowtime,
+        #)
+        Logdone.objects.create(logtime = nowtime,startcount = 1,addtime = nowtime,pname_id = 1,uname_id=userid,donelist=logtypeid)
+
+        return HttpResponse(True)
+
+    return HttpResponse(False)
 
 
 def userinfo(request,user_id):

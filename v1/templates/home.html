@@ -53,7 +53,7 @@
     <p>{{ ll.donelist }}</p>
 	  <p style="text-align:right">
 
-          <input type="checkbox" {% if tt.id in numli %}checked=""{% endif %} name="open" lay-skin="switch" lay-filter="switchTest" lay-text="完成|未做"></p>
+          <input type="checkbox" {% if tt.id in numli %}checked=""{% endif %} name="open" value="{{ tt.id }}" lay-skin="switch" lay-filter="switchTest" lay-text="完成|未做"></p>
 
     </div>
   </li>
@@ -106,12 +106,44 @@ layui.use(['element','form', 'layedit', 'laydate'], function(){
 
   //监听指定开关
   form.on('switch(switchTest)', function(data){
-      
+      var msg = this.checked ? '确定完成了么？' : '哦，又没完成呀？';
+      layer.confirm(msg,{title:'tips',cancel:function(){
+          if(data.elem.checked){
+            data.elem.checked=false;
+            $(data.othis).removeClass("layui-form-onswitch");
+            data.othis.html("<em>未完</em><i></i>");
+          }
+          else{
+              data.elem.checked=true;
+              $(data.othis).addclass("layui-form-onswitch");
+              data.othis.html("<em>完成</em><i></i>")
+          }
+      }
+      },function(){
+          layer.closeAll();
+          //submit
+          //alert(data.value);
+          //var lll = $.get('/bkz/homejson/5');
+          $.get("/bkz/homejson/"+data.value,function (rdata) {
+              //do it
+              alert(rdata);
+              layer.msg(rdata == 'True' ? "OK" : "ERROR");
 
-    layer.msg('开关checked：'+ (this.checked ? 'true' : 'false'), {
-      offset: '6px'
-    });
-    layer.tips('真棒！', data.othis)
+          })
+      },function(){
+          if(data.elem.checked){
+            data.elem.checked=false;
+            $(data.othis).removeClass("layui-form-onswitch");
+            data.othis.html("<em>未完</em><i></i>");
+          }
+          else{
+              data.elem.checked=true;
+              $(data.othis).addclass("layui-form-onswitch");
+              data.othis.html("<em>完成</em><i></i>")
+          }
+      })
+
+
   });
 
   

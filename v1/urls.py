@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^planadd/(?P<user_id>[0-9]+)$',views.planadd,name='planadd'),
     url(r'^planedit/(?P<plan_id>[0-9]+)$',views.planedit,name='planedit'),
     url(r'^planinfo/(?P<plan_id>[0-9]+)$',views.planinfo,name='planinfo'),
+    url(r'^homejson/(?P<logtypeid>[0-9]+)$',views.homejson,name='homejson'),
 ]
